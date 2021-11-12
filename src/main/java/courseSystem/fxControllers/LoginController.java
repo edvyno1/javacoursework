@@ -1,9 +1,9 @@
-package cs.fxControllers;
+package courseSystem.fxControllers;
 
-import cs.Start;
-import cs.ds.User;
+import courseSystem.Start;
+import courseSystem.ds.User;
 
-import cs.hibernateControllers.UserHibernate;
+import courseSystem.hibernateControllers.UserHibernate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,7 +12,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import javax.persistence.EntityManagerFactory;

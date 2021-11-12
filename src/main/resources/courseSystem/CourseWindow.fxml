@@ -10,7 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="cs.fxControllers.CourseWindowController">
+            fx:controller="courseSystem.fxControllers.CourseWindowController">
    <children>
       <ListView fx:id="myCourses" layoutX="11.0" layoutY="33.0" prefHeight="297.0" prefWidth="253.0">
          <contextMenu>

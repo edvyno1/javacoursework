@@ -1,4 +1,4 @@
-package cs;
+package courseSystem;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

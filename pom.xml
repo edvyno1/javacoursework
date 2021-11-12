@@ -7,7 +7,7 @@
     <groupId>last.chance</groupId>
     <artifactId>cs</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>cs</name>
+    <name>courseSystem</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -63,7 +63,7 @@
                         <!-- Default configuration for running with: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>cs.fxControllers.LoginController</mainClass>
+                            <mainClass>courseSystem.fxControllers.LoginController</mainClass>
                         </configuration>
                     </execution>
                 </executions>
