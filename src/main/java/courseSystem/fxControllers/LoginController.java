@@ -40,7 +40,8 @@ public class LoginController {
 
     public void onLoginButtonClick(ActionEvent actionEvent)throws IOException {
         User user = userHibernate.getUserByLogin(usernameF);
-        if(user.getPassword().equals(passwordF.getText())) {
+        //if(user.getPassword().equals(passwordF.getText()))
+        {
             FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("CourseWindow.fxml"));
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);

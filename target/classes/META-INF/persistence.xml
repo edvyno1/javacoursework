@@ -4,7 +4,7 @@
              version="2.2">
 
   <persistence-unit name="CourseSystem" transaction-type="RESOURCE_LOCAL">
-    <class>cs.ds.Course</class>
+    <class>courseSystem.ds.Course</class>
     <properties>
       <!-- property name="javax.persistence.jdbc.driver" value=" javax.persistence.jdbc.driver"/> -->
       <property name="javax.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver"/>

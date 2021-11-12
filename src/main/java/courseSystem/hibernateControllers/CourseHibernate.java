@@ -1,11 +1,16 @@
 package courseSystem.hibernateControllers;
 
 import courseSystem.ds.Course;
+import courseSystem.ds.User;
+import javafx.scene.control.TextField;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class CourseHibernate {
@@ -41,6 +46,25 @@ public class CourseHibernate {
             em = getEntityManager();
             em.getTransaction().begin();
             em.remove(em.contains(course) ? course : em.merge(course));
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+    public void editCourse(Course updatedCourse){
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            Course course = em.find(Course.class,updatedCourse.getId());
+            course.setTitle(updatedCourse.getTitle());
+            course.setDescription(updatedCourse.getDescription());
+            course.setStartDate(updatedCourse.getStartDate());
+            course.setEndDate(updatedCourse.getEndDate());
             em.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
@@ -90,5 +114,24 @@ public class CourseHibernate {
             System.out.println("No such course by given Id");
         }
         return course;
+    }
+    public Course getCourseByTitle(String title) {
+        EntityManager em;
+        List<Course> result = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            CriteriaBuilder cb = em.getCriteriaBuilder();
+            CriteriaQuery<Course> cr = cb.createQuery(Course.class);
+            Root<Course> root = cr.from(Course.class);
+            cr.select(root).where(cb.equal(root.get("title"), title));
+            TypedQuery<Course> query = em.createQuery(cr);
+            query.setMaxResults(1);
+            result = query.getResultList();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            
+        }
+        return result.get(0);
     }
 }

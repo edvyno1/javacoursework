@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
+import javafx.scene.control.cell.TextFieldListCell;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 
@@ -48,20 +49,16 @@ public class CourseWindowController implements Initializable {
     }
 
     public void populateFolders(MouseEvent mouseEvent) {
-        //1: Kurso pav (pradzios data - pabaigos)
-        //2: Kurso pav ...
 
         String courseId = myCourses.getSelectionModel().getSelectedItem().toString().split(":")[0];
-        //Course selectedCourse = courseHibControl.getCourseById(Integer.parseInt(courseId));
-        Course selectedCourse = courseHibernate.getCourseById(2);
+        Course selectedCourse = courseHibernate.getCourseById(Integer.parseInt(courseId));
 
-        //Root (Course folders:)
-        //  TreeItem<Folder> Folder1
-        //      TreeItem<Folder> subf1
-        //  TreeItem<Folder> Folder2
         courseFolderTree.setRoot(new TreeItem<String>("Course folders:"));
-        selectedCourse.getCourseFolders().forEach(folder -> addTreeItem(folder, courseFolderTree.getRoot()));
 
+        for(Folder folder : selectedCourse.getCourseFolders()){
+            System.out.println(folder.getTitle());
+            addTreeItem(folder, courseFolderTree.getRoot());
+        }
     }
     private void addTreeItem(Folder folder, TreeItem parentFolder) {
         TreeItem<Folder> treeItem = new TreeItem<>(folder);
@@ -95,18 +92,31 @@ public class CourseWindowController implements Initializable {
 //        stage.showAndWait();
 //    }
 
-    public void editSelected(ActionEvent event) {
+    public void editSelected(ActionEvent actionEvent) throws IOException {
+
+        FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("EditCourse.fxml"));
+        Parent root = fxmlLoader.load();
+
+        NewCourseForm newCourseForm = fxmlLoader.getController();
+        String ID = myCourses.getSelectionModel().getSelectedItem().toString().split(":")[0];
+        int id = Integer.parseInt(ID);
+        Course course = courseHibernate.getCourseById(id);
+        newCourseForm.enterByEdit(course);
+
+        Scene scene = new Scene(root);
+
+        Stage stage = (Stage) myCourses.getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 
     public void deleteSelected(ActionEvent event) {
 
-        System.out.println(myCourses.getItems());
         String ID = myCourses.getSelectionModel().getSelectedItem().toString().split(":")[0];
         int id = Integer.parseInt(ID);
         Course course = courseHibernate.getCourseById(id);
         id = myCourses.getSelectionModel().getSelectedIndex();
         myCourses.getItems().remove(id);
         courseHibernate.deleteCourse(course);
-        System.out.println(myCourses.getItems());
     }
 }

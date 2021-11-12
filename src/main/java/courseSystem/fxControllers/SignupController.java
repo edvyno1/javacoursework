@@ -1,13 +1,18 @@
 package courseSystem.fxControllers;
 
+import courseSystem.Start;
 import courseSystem.ds.Person;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import courseSystem.hibernateControllers.UserHibernate;
+import javafx.stage.Stage;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -40,6 +45,14 @@ public class SignupController {
             Person person = new Person(usernameF.getText(), passwordF.getText(), fNameF.getText(), lNameF.getText(), emailF.getText());
 
             userHibernate.createUser(person);
+            FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("CourseWindow.fxml"));
+            Parent root = fxmlLoader.load();
+
+            CourseWindowController courseWindowController = fxmlLoader.getController();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) usernameF.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
             //Write to database
             //INSERT Values (person.getLogin(), person.getPsw(), person.getDateCreated()...)
             //projectMngSys.getAllSysUsers().add(person);

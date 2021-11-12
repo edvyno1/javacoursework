@@ -12,7 +12,7 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="courseSystem.fxControllers.CourseWindowController">
    <children>
-      <ListView fx:id="myCourses" layoutX="11.0" layoutY="33.0" prefHeight="297.0" prefWidth="253.0">
+      <ListView fx:id="myCourses" layoutX="11.0" layoutY="33.0" onMouseClicked="#populateFolders" prefHeight="297.0" prefWidth="253.0">
          <contextMenu>
             <ContextMenu>
                <items>
@@ -23,7 +23,7 @@
             </ContextMenu>
          </contextMenu>
       </ListView>
-      <TreeView fx:id="projectTasks" layoutX="316.0" layoutY="33.0" prefHeight="298.0" prefWidth="264.0"/>
+      <TreeView fx:id="courseFolderTree" layoutX="316.0" layoutY="33.0" prefHeight="298.0" prefWidth="264.0"/>
       <MenuBar prefHeight="28.0" prefWidth="600.0">
          <menus>
             <Menu mnemonicParsing="false" text="Projects">

@@ -23,12 +23,21 @@ public class NewCourseForm {
     public DatePicker courseEnd;
 
     private String login;
+    private String titleOfEdit;
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CourseSystem");
     CourseHibernate courseHibernate = new CourseHibernate(entityManagerFactory);
 
     public void setCourseFormData(String login){
         this.login = login;
+    }
+
+    public void enterByEdit(Course course){
+        courseTitle.setText(course.getTitle());
+        courseDesc.setText(course.getDescription());
+        courseStart.setValue(course.getStartDate());
+        courseEnd.setValue(course.getEndDate());
+        titleOfEdit = course.getTitle();
     }
 
     public void createCourse(ActionEvent actionEvent) throws IOException {
@@ -43,7 +52,26 @@ public class NewCourseForm {
 
         Scene scene = new Scene(root);
         Stage stage = (Stage) courseTitle.getScene().getWindow();
-        //stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setScene(scene);
+        stage.show();
+    }
+    public void editCourse(ActionEvent actionEvent) throws IOException {
+        Course course = courseHibernate.getCourseByTitle(titleOfEdit);
+        Course newCourse = new Course();
+        newCourse.setId(course.getId());
+        newCourse.setTitle(courseTitle.getText());
+        newCourse.setDescription(courseDesc.getText());
+        newCourse.setStartDate(courseStart.getValue());
+        newCourse.setEndDate(courseEnd.getValue());
+        courseHibernate.editCourse(newCourse);
+        FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("CourseWindow.fxml"));
+        Parent root = fxmlLoader.load();
+
+        CourseWindowController courseWindowController = fxmlLoader.getController();
+        courseWindowController.setUser(login);
+
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) courseTitle.getScene().getWindow();
         stage.setScene(scene);
         stage.show();
     }
