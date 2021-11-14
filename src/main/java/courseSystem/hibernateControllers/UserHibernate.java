@@ -7,6 +7,7 @@ import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.time.LocalDate;
 import java.util.List;
 
 public class UserHibernate {
@@ -36,6 +37,47 @@ public class UserHibernate {
         }
     }
 
+    public void editUser(User user) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            user.setDateModified(LocalDate.now());
+            em.merge(user);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
+    public void deleteUser(int id) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            //Papildomai pries trinant reikia visus rysius ir priklausomybes patikrinti
+            User user = null;
+            try {
+                user = em.getReference(User.class, id);
+                user.getId();
+            } catch (Exception e) {
+                System.out.println("No such user by given Id");
+            }
+            em.remove(user);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
     public User getUserByLogin(TextField login) {
         EntityManager em;
         List<User> result = null;
@@ -54,5 +96,38 @@ public class UserHibernate {
             System.out.println("No such user by given username");
         }
         return result.get(0);
+    }
+    public List<User> getAllUsers() {
+        EntityManager em = getEntityManager();
+        List<User> result = null;
+        try {
+            CriteriaQuery query = em.getCriteriaBuilder().createQuery();
+            query.select(query.from(User.class));
+            Query q = em.createQuery(query);
+
+            result = q.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+        return result;
+    }
+
+    public User getUserById(int id) {
+        EntityManager em;
+        User user = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            user = em.getReference(User.class, id);
+            user.getId();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("No such course by given Id");
+        }
+        return user;
     }
 }

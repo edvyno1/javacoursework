@@ -8,9 +8,13 @@ public class File {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String name;
-    private String location;
     @ManyToOne
     private Folder folder;
+
+    public File(String name, Folder folder) {
+        this.name = name;
+        this.folder = folder;
+    }
 
     public File() {
     }
@@ -29,14 +33,6 @@ public class File {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
     }
 
     public Folder getFolder() {

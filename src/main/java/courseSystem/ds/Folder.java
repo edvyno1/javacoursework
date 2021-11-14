@@ -14,7 +14,7 @@ public class Folder {
     private String title;
     @ManyToOne
     private Course parentCourse;
-    @OneToMany(mappedBy = "parentFolder", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "parentFolder", cascade = {CascadeType.MERGE})
     @OrderBy("id ASC")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Folder> subFolders;
@@ -31,6 +31,16 @@ public class Folder {
 
 
     public Folder() {
+    }
+
+    public Folder(String title, Folder parentFolder) {
+        this.title = title;
+        this.parentFolder = parentFolder;
+    }
+
+    public Folder(String title, Course parentCourse) {
+        this.title = title;
+        this.parentCourse = parentCourse;
     }
 
     public Folder(String title) {
