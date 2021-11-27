@@ -30,6 +30,7 @@ public class Person extends User implements Serializable {
         this.email = email;
     }
 
+
     public String getName() {
         return name;
     }
