@@ -13,10 +13,10 @@
     <bean id="urlMapping" class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
         <property name="mappings">
             <props>
-                <!--<prop key="/course">course</prop>-->
+                <prop key="/course">course</prop>
                 <prop key="/user">user</prop>
-                <!--<prop key="/file">file</prop>
-                <prop key="/folder">folder</prop>-->
+                <prop key="/file">file</prop>
+                <prop key="/folder">folder</prop>
             </props>
         </property>
     </bean>
@@ -25,17 +25,17 @@
           p:prefix="/WEB-INF/jsp/"
           p:suffix=".jsp"/>
 
-   <!-- <bean name="course"
+    <bean name="course"
           class="courseSystem.webControllers.CourseWebController"
-    />-->
+    />
     <bean name="user"
           class="courseSystem.webControllers.UserWebController"
     />
-    <!--<bean name="file"
+    <bean name="file"
           class="courseSystem.webControllers.FileWebController"
     />
     <bean name="folder"
           class="courseSystem.webControllers.FolderWebController"
-    />-->
+    />
 
 </beans>

@@ -4,11 +4,12 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-public class Course {
+public class Course implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -17,14 +18,14 @@ public class Course {
     private LocalDate startDate;
     private LocalDate endDate;
 
-    @ManyToMany(mappedBy = "myModeratedCourses", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    /*@ManyToMany(mappedBy = "myModeratedCourses", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @OrderBy("id ASC")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<User> courseModerator;
-    @ManyToMany(mappedBy = "myEnrolledCourses", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<User> courseModerator;*/
+    /*@ManyToMany(mappedBy = "myEnrolledCourses", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @OrderBy("id ASC")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Person> students;
+    private List<Person> students;*/
     @OneToMany(mappedBy = "parentCourse", cascade = {CascadeType.MERGE})
     @OrderBy("id ASC")
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -38,10 +39,10 @@ public class Course {
         this.endDate = endDate;
     }
 
-    public Course(String title, List<User> courseModerator) {
+   /* public Course(String title, List<User> courseModerator) {
         this.title = title;
         this.courseModerator = courseModerator;
-    }
+    }*/
 
     public Course() {
     }
@@ -86,21 +87,21 @@ public class Course {
         this.endDate = endDate;
     }
 
-    public List<User> getCourseModerator() {
+   /* public List<User> getCourseModerator() {
         return courseModerator;
     }
 
     public void setCourseModerator(List<User> courseModerator) {
         this.courseModerator = courseModerator;
-    }
+    }*/
 
-    public List<Person> getStudents() {
+    /*public List<Person> getStudents() {
         return students;
     }
 
     public void setStudents(List<Person> students) {
         this.students = students;
-    }
+    }*/
 
     public List<Folder> getCourseFolders() {
         return courseFolders;

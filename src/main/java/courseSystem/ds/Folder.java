@@ -4,10 +4,11 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
-public class Folder {
+public class Folder implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -24,10 +25,10 @@ public class Folder {
     @OrderBy("id ASC")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<File> folderFiles;
-    @ManyToMany(mappedBy = "myFolders", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    /*@ManyToMany(mappedBy = "myFolders", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @OrderBy("id ASC")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<User> editors;
+    private List<User> editors;*/
 
 
     public Folder() {
@@ -35,6 +36,12 @@ public class Folder {
 
     public Folder(String title, Folder parentFolder) {
         this.title = title;
+        this.parentFolder = parentFolder;
+    }
+
+    public Folder(String title, Course parentCourse, Folder parentFolder) {
+        this.title = title;
+        this.parentCourse = parentCourse;
         this.parentFolder = parentFolder;
     }
 
@@ -95,11 +102,11 @@ public class Folder {
         this.folderFiles = folderFiles;
     }
 
-    public List<User> getEditors() {
+    /*public List<User> getEditors() {
         return editors;
     }
 
     public void setEditors(List<User> editors) {
         this.editors = editors;
-    }
+    }*/
 }

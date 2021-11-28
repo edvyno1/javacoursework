@@ -18,11 +18,11 @@ public abstract class User implements Serializable {
     @Enumerated(EnumType.ORDINAL)
     private UserType userType;
 
-    @ManyToMany
-    private List<Course> myModeratedCourses;
+    /*@ManyToMany
+    private List<Course> myModeratedCourses;*/
 
-    @ManyToMany
-    private List<Folder> myFolders;
+    /*@ManyToMany
+    private List<Folder> myFolders;*/
 
     public User(String login, String password) {
         this.login = login;
@@ -30,7 +30,7 @@ public abstract class User implements Serializable {
         this.dateCreated = LocalDate.now();
         this.dateModified = LocalDate.now();
         this.userType = UserType.ADMIN;
-        this.myModeratedCourses = new ArrayList<>();
+        /*this.myModeratedCourses = new ArrayList<>();*/
     }
 
 
@@ -85,19 +85,19 @@ public abstract class User implements Serializable {
         this.userType = userType;
     }
 
-    public List<Course> getMyModeratedCourses() {
+    /*public List<Course> getMyModeratedCourses() {
         return myModeratedCourses;
     }
 
     public void setMyModeratedCourses(List<Course> myModeratedCourses) {
         this.myModeratedCourses = myModeratedCourses;
-    }
+    }*/
 
-    public List<Folder> getMyFolders() {
+    /*public List<Folder> getMyFolders() {
         return myFolders;
     }
 
     public void setMyFolders(List<Folder> myFolders) {
         this.myFolders = myFolders;
-    }
+    }*/
 }

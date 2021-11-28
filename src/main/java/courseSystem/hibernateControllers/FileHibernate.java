@@ -2,9 +2,11 @@ package courseSystem.hibernateControllers;
 
 import courseSystem.ds.File;
 import courseSystem.ds.Folder;
+import courseSystem.ds.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -53,6 +55,23 @@ public class FileHibernate {
             }
         }
     }
+    public void deleteFile(int id) {
+        EntityManager em = null;
+        File file;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            file = em.getReference(File.class, id);
+            em.remove(file);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
 
     public void updateFile(File file) {
         EntityManager em = null;
@@ -88,5 +107,23 @@ public class FileHibernate {
             System.out.println("No such file by given name");
         }
         return result.get(0);
+    }
+    public List<File> getAllFiles() {
+        EntityManager em = getEntityManager();
+        List<File> result = null;
+        try {
+            CriteriaQuery query = em.getCriteriaBuilder().createQuery();
+            query.select(query.from(File.class));
+            Query q = em.createQuery(query);
+
+            result = q.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+        return result;
     }
 }

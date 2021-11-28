@@ -2,11 +2,12 @@ package courseSystem.hibernateControllers;
 
 import courseSystem.ds.Course;
 import courseSystem.ds.Folder;
-import courseSystem.ds.User;
+import courseSystem.ds.Folder;
 import javafx.scene.control.TextField;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -72,6 +73,24 @@ public class FolderHibernate {
         }
     }
 
+    public void deleteFolder(int id) {
+        EntityManager em = null;
+        Folder folder;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            folder = em.getReference(Folder.class, id);
+            em.remove(folder);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
 
     public Folder getFolderByTitle(String folderTitle) {
         System.out.println(folderTitle);
@@ -92,5 +111,38 @@ public class FolderHibernate {
             System.out.println("No such folder by title");
         }
         return result.get(0);
+    }
+    public List<Folder> getAllFolders() {
+        EntityManager em = getEntityManager();
+        List<Folder> result = null;
+        try {
+            CriteriaQuery query = em.getCriteriaBuilder().createQuery();
+            query.select(query.from(Folder.class));
+            Query q = em.createQuery(query);
+
+            result = q.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+        return result;
+    }
+
+    public Folder getFolderById(int id) {
+        EntityManager em;
+        Folder folder = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            folder = em.getReference(Folder.class, id);
+            folder.getId();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("No such folder by given Id");
+        }
+        return folder;
     }
 }

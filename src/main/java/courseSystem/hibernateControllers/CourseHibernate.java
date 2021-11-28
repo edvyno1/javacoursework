@@ -55,6 +55,25 @@ public class CourseHibernate {
             }
         }
     }
+
+    public void deleteCourse(int id) {
+        EntityManager em = null;
+        Course course;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            course = em.getReference(Course.class, id);
+            em.remove(course);
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (em != null) {
+                em.close();
+            }
+        }
+    }
+
     public void editCourse(Course updatedCourse){
         EntityManager em = null;
         try {

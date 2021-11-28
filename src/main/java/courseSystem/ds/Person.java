@@ -10,8 +10,8 @@ public class Person extends User implements Serializable {
     private String name;
     private String surname;
     private String email;
-    @ManyToMany
-    private List<Course> myEnrolledCourses;
+    /*@ManyToMany
+    private List<Course> myEnrolledCourses;*/
 
 
     public Person() {
@@ -55,11 +55,11 @@ public class Person extends User implements Serializable {
         this.email = email;
     }
 
-    public List<Course> getMyEnrolledCourses() {
+    /*public List<Course> getMyEnrolledCourses() {
         return myEnrolledCourses;
     }
 
     public void setMyEnrolledCourses(List<Course> myEnrolledCourses) {
         this.myEnrolledCourses = myEnrolledCourses;
-    }
+    }*/
 }
