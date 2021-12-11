@@ -8,6 +8,8 @@ import java.util.List;
 
 @Entity
 public abstract class User implements Serializable {
+    @Column(insertable = false, updatable = false)
+    private String DTYPE;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

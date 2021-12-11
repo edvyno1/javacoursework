@@ -78,7 +78,7 @@ public class UserHibernate {
         }
     }
 
-    public User getUserByLogin(TextField login) {
+    public User getUserByLogin(String login) {
         EntityManager em;
         List<User> result = null;
         try {
@@ -87,7 +87,7 @@ public class UserHibernate {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<User> cr = cb.createQuery(User.class);
             Root<User> root = cr.from(User.class);
-            cr.select(root).where(cb.equal(root.get("login"), login.getText()));
+            cr.select(root).where(cb.equal(root.get("login"), login));
             TypedQuery<User> query = em.createQuery(cr);
             query.setMaxResults(1);
             result = query.getResultList();

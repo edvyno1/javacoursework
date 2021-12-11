@@ -45,9 +45,9 @@ public class LoginController {
             alertController.errorDialog("Login error", "Username and/or Password fields mustn't be empty.", "Fill the missing fields and try again.");
             return;
         }
-        User user = userHibernate.getUserByLogin(usernameF);
+        User user = userHibernate.getUserByLogin(usernameF.getText());
 
-        if(user == null){
+        if(user.getLogin() == null){
             alertController.errorDialog("Login error", "Username or Password is invalid.", "Verify that you entered the credentials correctly.");
         }
 

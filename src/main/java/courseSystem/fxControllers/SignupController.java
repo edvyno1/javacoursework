@@ -1,6 +1,7 @@
 package courseSystem.fxControllers;
 
 import courseSystem.Start;
+import courseSystem.ds.Company;
 import courseSystem.ds.Person;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -13,6 +14,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import courseSystem.hibernateControllers.UserHibernate;
 import javafx.stage.Stage;
+import org.w3c.dom.Text;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -36,6 +38,10 @@ public class SignupController {
     public RadioButton OrgBtn;
     @FXML
     public ToggleGroup PerOrOrg;
+    @FXML
+    public TextField cNameF;
+    @FXML
+    public TextField pOfContactF;
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CourseSystem");
     UserHibernate userHibernate = new UserHibernate(entityManagerFactory);
@@ -57,10 +63,16 @@ public class SignupController {
             //INSERT Values (person.getLogin(), person.getPsw(), person.getDateCreated()...)
             //projectMngSys.getAllSysUsers().add(person);
         } else {
-//            Company company = new Company(loginF.getText(), pswF.getText(), comNameF.getText(), comRepF.getText(), comAddrF.getText(), comPhoneF.getText());
-            //Write to db
-            //INSERT...values(company.getLogin()...)
-//            projectMngSys.getAllSysUsers().add(company);
+            Company company = new Company(usernameF.getText(), passwordF.getText(), cNameF.getText(), pOfContactF.getText());
+            userHibernate.createUser(company);
+            FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("CourseWindow.fxml"));
+            Parent root = fxmlLoader.load();
+
+            CourseWindowController courseWindowController = fxmlLoader.getController();
+            Scene scene = new Scene(root);
+            Stage stage = (Stage) usernameF.getScene().getWindow();
+            stage.setScene(scene);
+            stage.show();
         }
     }
 }
