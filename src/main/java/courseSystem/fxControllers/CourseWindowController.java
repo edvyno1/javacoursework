@@ -100,11 +100,11 @@ public class CourseWindowController implements Initializable {
             }
         }
 
-//        if(folder.getFolderFiles() != null) {
-//            for (File file : folder.getFolderFiles()) {
-//                addTreeItem(file, treeItem);
-//            }
-//        }
+        if(folder.getFolderFiles() != null) {
+            for (File file : folder.getFolderFiles()) {
+                addTreeItem(file, treeItem);
+            }
+        }
     }
     private void addTreeItem(File file, TreeItem root) {
         TreeItem<String>treeItem = new TreeItem<>(file.getName());

@@ -45,6 +45,25 @@ public class FolderWebController {
         System.out.println(allFolders);
         return gson.toJson(allFolders);
     }
+
+    @RequestMapping(value = "/folder/byCourse/{id}", method = RequestMethod.GET)
+    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseBody
+    public String getCourseById(@PathVariable(name = "id") int id) {
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        gsonBuilder.serializeNulls();
+        Type folderList = new TypeToken<List<Folder>>(){}.getType();
+        gsonBuilder.registerTypeAdapter(Folder.class, new FolderGsonSerializer())
+                .registerTypeAdapter(LocalDate.class, new LocalDateSerializer())
+                .registerTypeAdapter(folderList, new FolderListGsonSerializer())
+                .registerTypeAdapter(File.class, new FileGsonSerializer());
+        List<Folder> allFolders = folderHibernate.getFolderByCourseId(id);
+        Gson gson = gsonBuilder.create();
+        System.out.println(gson.toJson(allFolders));
+        System.out.println(allFolders);
+        return gson.toJson(allFolders);
+    }
+
     @RequestMapping(value = "/folder/updateFolder/{id}", method = RequestMethod.PUT)
     @ResponseStatus(value = HttpStatus.OK)
     @ResponseBody

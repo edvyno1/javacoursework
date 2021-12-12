@@ -13,6 +13,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FolderHibernate {
@@ -112,6 +113,7 @@ public class FolderHibernate {
         }
         return result.get(0);
     }
+
     public List<Folder> getAllFolders() {
         EntityManager em = getEntityManager();
         List<Folder> result = null;
@@ -144,5 +146,23 @@ public class FolderHibernate {
             System.out.println("No such folder by given Id");
         }
         return folder;
+    }
+
+    public List<Folder> getFolderByCourseId(int id) {
+        List<Folder> allFolders = getAllFolders();
+        List<Folder> returnFolders = new ArrayList<Folder>();
+            for(Folder folder : allFolders){
+
+                try{
+                    if(folder.getParentCourse().getId() == id){
+                        returnFolders.add(folder);
+                    }
+                } catch(Exception e){
+                    e.printStackTrace();
+                    System.out.println("Parent course is null");
+                }
+
+            }
+        return returnFolders;
     }
 }

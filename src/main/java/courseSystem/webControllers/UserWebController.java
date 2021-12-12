@@ -53,30 +53,15 @@ public class UserWebController {
         Gson parser = new Gson();
         Properties data = parser.fromJson(request, Properties.class);
         GsonBuilder gson = new GsonBuilder();
-//        Person person = null;
-//        Company company = null;
         User user = null;
         user = userHibController.getUserByLogin(data.getProperty("login"));
-        gson.registerTypeAdapter(Person.class, new UserGsonSerializer()).registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
-        Gson builder = gson.create();
-        return builder.toJson(user);
-//        if (data.getProperty("usertype").equals("P")) {
-//            person = (Person) userHibController.getUserByLogin(data.getProperty("login"));
-//            gson.registerTypeAdapter(Person.class, new PersonGsonSerializer()).registerTypeAdapter(LocalDate.class, new LocalDateGsonSerializer());
-//        } else if (data.getProperty("userType").equals("C")) {
-//            company = (Company) userHibController.getUserByLogin(data.getProperty("login"));
-//            gson.registerTypeAdapter(Company.class, new CompanyGsonSerializer()).registerTypeAdapter(LocalDate.class, new LocalDateGsonSerializer());
-//        }
-//
-//        if (person == null && company == null) {
-//            return "Wrong credentials or no such user";
-//        }
-//
-//
-//        Gson builder = gson.create();
-//        return person != null ? builder.toJson(person) : builder.toJson(company);
-
-
+        if(data.getProperty("password").equals(user.getPassword())){
+            gson.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
+            Gson builder = gson.create();
+            return builder.toJson(user);
+        } else {
+            return "Wrong credentials or no such user";
+        }
     }
 
     @RequestMapping(value = "/user/updateUser/{id}", method = RequestMethod.PUT)
