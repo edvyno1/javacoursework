@@ -1,5 +1,8 @@
 package courseSystem.ds;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -13,6 +16,7 @@ public abstract class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(length = 64, unique = true)
     private String login;
     private String password;
     private LocalDate dateCreated;
@@ -20,19 +24,18 @@ public abstract class User implements Serializable {
     @Enumerated(EnumType.ORDINAL)
     private UserType userType;
 
-    /*@ManyToMany
-    private List<Course> myModeratedCourses;*/
-
-    /*@ManyToMany
-    private List<Folder> myFolders;*/
+    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @JoinTable(name = "course_moderator", joinColumns = @JoinColumn(name = "moderator_id"),
+            inverseJoinColumns = @JoinColumn(name = "moderatedCourse_id"))
+    private List<Course> myModeratedCourses;
 
     public User(String login, String password) {
         this.login = login;
         this.password = password;
         this.dateCreated = LocalDate.now();
         this.dateModified = LocalDate.now();
-        this.userType = UserType.ADMIN;
-        /*this.myModeratedCourses = new ArrayList<>();*/
+        this.myModeratedCourses = new ArrayList<>();
     }
 
 
@@ -87,19 +90,15 @@ public abstract class User implements Serializable {
         this.userType = userType;
     }
 
-    /*public List<Course> getMyModeratedCourses() {
+    public String getDTYPE() {
+        return DTYPE;
+    }
+
+    public List<Course> getMyModeratedCourses() {
         return myModeratedCourses;
     }
 
     public void setMyModeratedCourses(List<Course> myModeratedCourses) {
         this.myModeratedCourses = myModeratedCourses;
-    }*/
-
-    /*public List<Folder> getMyFolders() {
-        return myFolders;
     }
-
-    public void setMyFolders(List<Folder> myFolders) {
-        this.myFolders = myFolders;
-    }*/
 }

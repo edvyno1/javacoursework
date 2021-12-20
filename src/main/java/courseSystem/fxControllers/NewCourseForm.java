@@ -2,7 +2,9 @@ package courseSystem.fxControllers;
 
 import courseSystem.Start;
 import courseSystem.ds.Course;
+import courseSystem.ds.User;
 import courseSystem.hibernateControllers.CourseHibernate;
+import courseSystem.hibernateControllers.UserHibernate;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -21,15 +23,16 @@ public class NewCourseForm {
     public TextArea courseDesc;
     public DatePicker courseStart;
     public DatePicker courseEnd;
-
-    private String login;
+    private User user;
+    private Course course;
     private String titleOfEdit;
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CourseSystem");
     CourseHibernate courseHibernate = new CourseHibernate(entityManagerFactory);
+    UserHibernate userHibernate = new UserHibernate(entityManagerFactory);
 
-    public void setCourseFormData(String login){
-        this.login = login;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void enterByEdit(Course course){
@@ -44,16 +47,12 @@ public class NewCourseForm {
 
         Course course = new Course(courseTitle.getText(),courseDesc.getText(),courseStart.getValue(),courseEnd.getValue());
         courseHibernate.createCourse(course);
-        FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("CourseWindow.fxml"));
-        Parent root = fxmlLoader.load();
+        Course newCourse = courseHibernate.getCourseByTitle(courseTitle.getText());
+        User user = this.user;
+        user.getMyModeratedCourses().add(newCourse);
+        userHibernate.editUser(user);
+        returnBack();
 
-        CourseWindowController courseWindowController = fxmlLoader.getController();
-        courseWindowController.setUser(login);
-
-        Scene scene = new Scene(root);
-        Stage stage = (Stage) courseTitle.getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
     }
     public void editCourse(ActionEvent actionEvent) throws IOException {
         Course course = courseHibernate.getCourseByTitle(titleOfEdit);
@@ -64,11 +63,15 @@ public class NewCourseForm {
         newCourse.setStartDate(courseStart.getValue());
         newCourse.setEndDate(courseEnd.getValue());
         courseHibernate.editCourse(newCourse);
+        returnBack();
+    }
+
+    public void returnBack() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("CourseWindow.fxml"));
         Parent root = fxmlLoader.load();
 
         CourseWindowController courseWindowController = fxmlLoader.getController();
-        courseWindowController.setUser(login);
+        courseWindowController.setUser(this.user);
 
         Scene scene = new Scene(root);
         Stage stage = (Stage) courseTitle.getScene().getWindow();

@@ -1,5 +1,5 @@
 package courseSystem.ds;
 
 public enum UserType {
-    VIEWER,MODERATOR,ADMIN
+    VIEWER,CREATOR,ADMIN
 }

@@ -18,6 +18,7 @@
         <Label layoutX="11.0" layoutY="220.0" text="Start date:" />
         <Button layoutX="267.0" layoutY="319.0" mnemonicParsing="false" onAction="#editCourse" text="Finish" />
         <Label layoutX="11.0" layoutY="269.0" text="End date:" />
+        <Button layoutX="40.0" layoutY="319.0" mnemonicParsing="false" onAction="#returnBack" text="Cancel" />
     </children>
 </AnchorPane>
 

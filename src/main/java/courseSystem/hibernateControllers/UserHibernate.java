@@ -1,5 +1,6 @@
 package courseSystem.hibernateControllers;
 
+import courseSystem.ds.Person;
 import courseSystem.ds.User;
 import javafx.scene.control.TextField;
 
@@ -59,7 +60,6 @@ public class UserHibernate {
         try {
             em = getEntityManager();
             em.getTransaction().begin();
-            //Papildomai pries trinant reikia visus rysius ir priklausomybes patikrinti
             User user = null;
             try {
                 user = em.getReference(User.class, id);
@@ -94,6 +94,7 @@ public class UserHibernate {
             em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("No such user by given username");
+            return null;
         }
         return result.get(0);
     }
@@ -127,6 +128,21 @@ public class UserHibernate {
             em.getTransaction().commit();
         } catch (Exception e) {
             System.out.println("No such course by given Id");
+        }
+        return user;
+    }
+
+    public Person getPersonById(int id) {
+        EntityManager em;
+        Person user = null;
+        try {
+            em = getEntityManager();
+            em.getTransaction().begin();
+            user = em.getReference(Person.class, id);
+            user.getId();
+            em.getTransaction().commit();
+        } catch (Exception e) {
+            System.out.println("No such user by given Id");
         }
         return user;
     }

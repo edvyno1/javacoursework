@@ -1,7 +1,11 @@
 package courseSystem.ds;
 
-import javax.persistence.Entity;
-import javax.persistence.ManyToMany;
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -10,11 +14,23 @@ public class Person extends User implements Serializable {
     private String name;
     private String surname;
     private String email;
-    /*@ManyToMany
-    private List<Course> myEnrolledCourses;*/
-
+    @ManyToMany(fetch = FetchType.EAGER)
+    @Cascade({CascadeType.MERGE, CascadeType.PERSIST})
+    @JoinTable(name = "course_student", joinColumns = @JoinColumn(name = "student_id"),
+            inverseJoinColumns = @JoinColumn(name = "enrolledCourse_id"))
+    @LazyCollection(LazyCollectionOption.FALSE)
+    private List<Course> myEnrolledCourses;
 
     public Person() {
+    }
+
+    public Person(String login, String password, String name, String surname, String email, List<Course> myEnrolledCourses) {
+        super(login, password);
+        this.name = name;
+        this.surname = surname;
+        this.email = email;
+        this.myEnrolledCourses = myEnrolledCourses;
+        super.setUserType(UserType.VIEWER);
     }
 
     public Person(String login, String password, String name, String surname, String email) {
@@ -55,11 +71,11 @@ public class Person extends User implements Serializable {
         this.email = email;
     }
 
-    /*public List<Course> getMyEnrolledCourses() {
+    public List<Course> getMyEnrolledCourses() {
         return myEnrolledCourses;
     }
 
     public void setMyEnrolledCourses(List<Course> myEnrolledCourses) {
         this.myEnrolledCourses = myEnrolledCourses;
-    }*/
+    }
 }

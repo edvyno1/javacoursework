@@ -13,6 +13,7 @@ public class Company extends User implements Serializable {
         super(login, password);
         this.companyName = companyName;
         this.personOfContact = personOfContact;
+        super.setUserType(UserType.CREATOR);
     }
 
     public Company() {

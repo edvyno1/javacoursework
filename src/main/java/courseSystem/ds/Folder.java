@@ -15,21 +15,16 @@ public class Folder implements Serializable {
     private String title;
     @ManyToOne
     private Course parentCourse;
-    @OneToMany(mappedBy = "parentFolder", cascade = {CascadeType.MERGE})
+    @OneToMany(mappedBy = "parentFolder", orphanRemoval = true, cascade = {CascadeType.MERGE})
     @OrderBy("id ASC")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<Folder> subFolders;
     @ManyToOne
     private Folder parentFolder;
-    @OneToMany(mappedBy = "folder", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(mappedBy = "folder", orphanRemoval = true, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @OrderBy("id ASC")
     @LazyCollection(LazyCollectionOption.FALSE)
     private List<File> folderFiles;
-    /*@ManyToMany(mappedBy = "myFolders", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @OrderBy("id ASC")
-    @LazyCollection(LazyCollectionOption.FALSE)
-    private List<User> editors;*/
-
 
     public Folder() {
     }

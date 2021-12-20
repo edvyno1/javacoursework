@@ -17,15 +17,16 @@ public class Course implements Serializable {
     private String description;
     private LocalDate startDate;
     private LocalDate endDate;
+    private String madeBy;
 
-    /*@ManyToMany(mappedBy = "myModeratedCourses", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "myModeratedCourses", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @OrderBy("id ASC")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<User> courseModerator;*/
-    /*@ManyToMany(mappedBy = "myEnrolledCourses", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private List<User> courseModerator;
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "myEnrolledCourses", cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @OrderBy("id ASC")
     @LazyCollection(LazyCollectionOption.FALSE)
-    private List<Person> students;*/
+    private List<Person> students;
     @OneToMany(mappedBy = "parentCourse", cascade = {CascadeType.MERGE})
     @OrderBy("id ASC")
     @LazyCollection(LazyCollectionOption.FALSE)
@@ -39,10 +40,18 @@ public class Course implements Serializable {
         this.endDate = endDate;
     }
 
-   /* public Course(String title, List<User> courseModerator) {
+    public Course(String title, List<User> courseModerator) {
         this.title = title;
         this.courseModerator = courseModerator;
-    }*/
+    }
+
+    public Course(String title, String description, LocalDate startDate, LocalDate endDate, String userLogin) {
+        this.title = title;
+        this.description = description;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.madeBy = userLogin;
+    }
 
     public Course() {
     }
@@ -87,21 +96,21 @@ public class Course implements Serializable {
         this.endDate = endDate;
     }
 
-   /* public List<User> getCourseModerator() {
+    public List<User> getCourseModerator() {
         return courseModerator;
     }
 
     public void setCourseModerator(List<User> courseModerator) {
         this.courseModerator = courseModerator;
-    }*/
+    }
 
-    /*public List<Person> getStudents() {
+    public List<Person> getStudents() {
         return students;
     }
 
     public void setStudents(List<Person> students) {
         this.students = students;
-    }*/
+    }
 
     public List<Folder> getCourseFolders() {
         return courseFolders;

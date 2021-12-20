@@ -9,26 +9,26 @@
 <?import javafx.scene.control.TreeView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="courseSystem.fxControllers.CourseWindowController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="courseSystem.fxControllers.CourseWindowController">
    <children>
       <ListView fx:id="myCourses" layoutX="11.0" layoutY="33.0" onMouseClicked="#populateFolders" prefHeight="297.0" prefWidth="253.0">
          <contextMenu>
             <ContextMenu>
                <items>
-                  <MenuItem fx:id="addItem" mnemonicParsing="false" text="New" onAction="#newCourseForm"/>
-                  <MenuItem fx:id="editItem" mnemonicParsing="false" text="Edit" onAction="#editSelected"/>
-                  <MenuItem fx:id="deleteItem" mnemonicParsing="false" text="Delete" onAction="#deleteSelected"/>
+                  <MenuItem fx:id="addItem" mnemonicParsing="false" onAction="#newCourseForm" text="New" />
+                  <MenuItem fx:id="editItem" mnemonicParsing="false" onAction="#editSelected" text="Edit" />
+                  <MenuItem fx:id="deleteItem" mnemonicParsing="false" onAction="#deleteSelected" text="Delete" />
                </items>
             </ContextMenu>
          </contextMenu>
       </ListView>
-      <TreeView fx:id="courseFolderTree" layoutX="325.0" layoutY="37.0" prefHeight="300.0" prefWidth="275.0">
+
+      <TreeView fx:id="courseFolderTree" layoutX="325.0" layoutY="37.0" prefHeight="300.0" prefWidth="275.0" visible="false">
          <contextMenu>
-            <ContextMenu>
+            <ContextMenu fx:id="courseContext">
                <items>
                   <MenuItem fx:id="addFolder" mnemonicParsing="false" onAction="#addFolder" text="New Folder" />
-                  <MenuItem mnemonicParsing="false" onAction="#fileTreeDelete" text="Delete" />
+                  <MenuItem fx:id="delFolder" mnemonicParsing="false" onAction="#fileTreeDelete" text="Delete" />
 <!--                  <MenuItem fx:id="addFile" mnemonicParsing="false" onAction="#addFile" text="New File" />-->
                </items>
             </ContextMenu>
@@ -57,9 +57,9 @@
 <!--                  <MenuItem mnemonicParsing="false" text="Delete" />-->
                </items>
             </Menu>
-            <Menu mnemonicParsing="false" text="Users">
+            <Menu fx:id="userMenu" mnemonicParsing="false" text="Users">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#openUserTable" text="Manage users" />
+                  <MenuItem fx:id="showUsers" mnemonicParsing="false" onAction="#openUserTable" text="Manage users" />
                </items>
             </Menu>
 <!--            <Menu mnemonicParsing="false" text="My account">-->
@@ -80,7 +80,7 @@
 <!--            </Menu>-->
          </menus>
       </MenuBar>
-      <Button layoutX="24.0" layoutY="349.0" mnemonicParsing="false" onAction="#newCourseForm" prefHeight="26.0"
-              prefWidth="128.0" text="Create new course"/>
+      <Button layoutX="24.0" layoutY="349.0" mnemonicParsing="false" onAction="#newCourseForm" prefHeight="26.0" prefWidth="128.0" text="Create new course" />
+      <Button fx:id="enrollButton" onAction="#enrollToCourse" layoutX="165.0" layoutY="350.0" mnemonicParsing="false" text="Enroll to course" />
    </children>
 </AnchorPane>

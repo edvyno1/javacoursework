@@ -30,8 +30,6 @@ public class LoginController {
 
     public void onRegisterButtonClick(ActionEvent actionEvent)throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("Signup.fxml"));
-//        SignupController signUpForm = fxmlLoader.getController();
-//        signUpForm.setProjectMngSys(projectMngSys);
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -45,22 +43,27 @@ public class LoginController {
             alertController.errorDialog("Login error", "Username and/or Password fields mustn't be empty.", "Fill the missing fields and try again.");
             return;
         }
-        User user = userHibernate.getUserByLogin(usernameF.getText());
+        try {
+            User user = null;
+            user = userHibernate.getUserByLogin(usernameF.getText());
 
-        if(user.getLogin() == null){
-            alertController.errorDialog("Login error", "Username or Password is invalid.", "Verify that you entered the credentials correctly.");
-        }
+            if (user.getPassword().equals(passwordF.getText())) {
+                FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("CourseWindow.fxml"));
+                Parent root = fxmlLoader.load();
 
-        if(user.getPassword().equals(passwordF.getText())) {
-            FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("CourseWindow.fxml"));
-            Parent root = fxmlLoader.load();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-        }
-        else{
+                CourseWindowController courseWindowController = fxmlLoader.getController();
+                courseWindowController.setUser(user);
+
+                Scene scene = new Scene(root);
+                Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+                stage.setScene(scene);
+                stage.show();
+            } else {
+                alertController.errorDialog("Login error", "Username or Password is invalid.", "Verify that you entered the credentials correctly.");
+            }
+        } catch (Exception e){
             alertController.errorDialog("Login error", "Username or Password is invalid.", "Verify that you entered the credentials correctly.");
+            e.printStackTrace();
         }
     }
 }

@@ -3,9 +3,11 @@ package courseSystem.fxControllers;
 import courseSystem.Start;
 import courseSystem.ds.Company;
 import courseSystem.ds.Person;
+import courseSystem.ds.User;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
@@ -43,36 +45,43 @@ public class SignupController {
     @FXML
     public TextField pOfContactF;
 
+    private String returnPath;
+    private User user;
+
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CourseSystem");
     UserHibernate userHibernate = new UserHibernate(entityManagerFactory);
 
     public void onActionSignupButton(ActionEvent actionEvent)throws IOException, SQLException {
         if (PersonBtn.isSelected()) {
-            Person person = new Person(usernameF.getText(), passwordF.getText(), fNameF.getText(), lNameF.getText(), emailF.getText());
+            Person person = new Person(usernameF.getText(), passwordF.getText(), fNameF.getText(), lNameF.getText(), emailF.getText(), null);
 
             userHibernate.createUser(person);
-            FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("CourseWindow.fxml"));
-            Parent root = fxmlLoader.load();
-
-            CourseWindowController courseWindowController = fxmlLoader.getController();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) usernameF.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-            //Write to database
-            //INSERT Values (person.getLogin(), person.getPsw(), person.getDateCreated()...)
-            //projectMngSys.getAllSysUsers().add(person);
         } else {
             Company company = new Company(usernameF.getText(), passwordF.getText(), cNameF.getText(), pOfContactF.getText());
             userHibernate.createUser(company);
-            FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("CourseWindow.fxml"));
-            Parent root = fxmlLoader.load();
-
-            CourseWindowController courseWindowController = fxmlLoader.getController();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) usernameF.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
         }
+        returnToPrevious(actionEvent);
+    }
+
+    @FXML
+    private void returnToPrevious(ActionEvent actionEvent) throws IOException {
+        System.out.println(returnPath);
+        if(returnPath == null){returnPath = "Login.fxml";}
+        FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource(returnPath));
+        Parent root = fxmlLoader.load();
+        if(returnPath!="Login.fxml"){
+            UserTableController userTableController = fxmlLoader.getController();
+            userTableController.setUser(user);
+        }
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
+    }
+    public void setUser(User user) {
+        this.user = user;
+    }
+    public void setPath(String returnPath){
+        this.returnPath = returnPath;
     }
 }

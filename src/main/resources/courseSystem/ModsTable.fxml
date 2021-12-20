@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane prefHeight="528.0" prefWidth="322.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="courseSystem.fxControllers.ModController">
+    <children>
+        <TableView fx:id="usersTable" layoutX="32.0" layoutY="28.0" prefHeight="473.0" prefWidth="259.0" AnchorPane.bottomAnchor="27.0" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="31.0" AnchorPane.topAnchor="28.0">
+            <columns>
+                <TableColumn fx:id="colId" prefWidth="73.0" text="ID" />
+                <TableColumn fx:id="colLogin" prefWidth="185.0" text="Username" />
+                <TableColumn fx:id="isModCol" minWidth="0.0" prefWidth="0.0" text="Is Moderator?" />
+            </columns>
+            <contextMenu>
+                <ContextMenu fx:id="contextMenu">
+                    <items>
+                        <MenuItem fx:id="createUser" mnemonicParsing="false" onAction="#addMod" text="Add as Moderator" />
+                        <MenuItem fx:id="removeUser" mnemonicParsing="false" onAction="#removeMod" text="Remove from Moderators" />
+                    </items>
+                </ContextMenu>
+            </contextMenu>
+        </TableView>
+    </children>
+</AnchorPane>
