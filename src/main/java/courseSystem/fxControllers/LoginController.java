@@ -30,8 +30,6 @@ public class LoginController {
 
     public void onRegisterButtonClick(ActionEvent actionEvent)throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("Signup.fxml"));
-//        SignupController signUpForm = fxmlLoader.getController();
-//        signUpForm.setProjectMngSys(projectMngSys);
         Parent root = fxmlLoader.load();
         Scene scene = new Scene(root);
         Stage stage = (Stage) ((Node) actionEvent.getSource()).getScene().getWindow();
@@ -41,17 +39,7 @@ public class LoginController {
 
     public void onLoginButtonClick(ActionEvent actionEvent)throws IOException {
 
-        if(usernameF.getText().isEmpty() || passwordF.getText().isEmpty()){
-            alertController.errorDialog("Login error", "Username and/or Password fields mustn't be empty.", "Fill the missing fields and try again.");
-            return;
-        }
-        User user = userHibernate.getUserByLogin(usernameF.getText());
-
-        if(user.getLogin() == null){
-            alertController.errorDialog("Login error", "Username or Password is invalid.", "Verify that you entered the credentials correctly.");
-        }
-
-        if(user.getPassword().equals(passwordF.getText())) {
+        if(isLoginValid()) {
             FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("CourseWindow.fxml"));
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
@@ -59,8 +47,26 @@ public class LoginController {
             stage.setScene(scene);
             stage.show();
         }
-        else{
-            alertController.errorDialog("Login error", "Username or Password is invalid.", "Verify that you entered the credentials correctly.");
+    }
+
+    private boolean isLoginValid() throws IOException{
+        if(usernameF.getText().isEmpty() || passwordF.getText().isEmpty()){
+            alertController.errorDialog("Login error", "Username and/or Password fields mustn't be empty.", "Fill the missing fields and try again.");
+            return false;
         }
+        try{
+            User user = userHibernate.getUserByLogin(usernameF.getText());
+
+            if(!user.getPassword().equals(passwordF.getText())){
+                alertController.errorDialog("Login error", "Username or Password is invalid.", "Verify that you entered the credentials correctly.");
+                return false;
+            }
+        }
+        catch (Exception e){
+            alertController.errorDialog("Login error", "Username or Password is invalid.", "Verify that you entered the credentials correctly.");
+            return false;
+        }
+
+        return true;
     }
 }

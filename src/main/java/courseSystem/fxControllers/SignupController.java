@@ -46,33 +46,33 @@ public class SignupController {
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CourseSystem");
     UserHibernate userHibernate = new UserHibernate(entityManagerFactory);
 
-    public void onActionSignupButton(ActionEvent actionEvent)throws IOException, SQLException {
+    public void onActionSignupButton()throws IOException, SQLException {
         if (PersonBtn.isSelected()) {
-            Person person = new Person(usernameF.getText(), passwordF.getText(), fNameF.getText(), lNameF.getText(), emailF.getText());
-
-            userHibernate.createUser(person);
-            FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("CourseWindow.fxml"));
-            Parent root = fxmlLoader.load();
-
-            CourseWindowController courseWindowController = fxmlLoader.getController();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) usernameF.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
-            //Write to database
-            //INSERT Values (person.getLogin(), person.getPsw(), person.getDateCreated()...)
-            //projectMngSys.getAllSysUsers().add(person);
+            createPerson();
         } else {
-            Company company = new Company(usernameF.getText(), passwordF.getText(), cNameF.getText(), pOfContactF.getText());
-            userHibernate.createUser(company);
-            FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("CourseWindow.fxml"));
-            Parent root = fxmlLoader.load();
-
-            CourseWindowController courseWindowController = fxmlLoader.getController();
-            Scene scene = new Scene(root);
-            Stage stage = (Stage) usernameF.getScene().getWindow();
-            stage.setScene(scene);
-            stage.show();
+            createCompany();
         }
+        showScene();
+    }
+
+    public void createPerson() {
+        Person person = new Person(usernameF.getText(), passwordF.getText(), fNameF.getText(), lNameF.getText(), emailF.getText());
+        userHibernate.createUser(person);
+    }
+
+    public void createCompany() {
+        Company company = new Company(usernameF.getText(), passwordF.getText(), cNameF.getText(), pOfContactF.getText());
+        userHibernate.createUser(company);
+    }
+
+    public void showScene() throws IOException{
+        FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("CourseWindow.fxml"));
+        Parent root = fxmlLoader.load();
+
+        CourseWindowController courseWindowController = fxmlLoader.getController();
+        Scene scene = new Scene(root);
+        Stage stage = (Stage) usernameF.getScene().getWindow();
+        stage.setScene(scene);
+        stage.show();
     }
 }
