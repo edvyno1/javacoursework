@@ -13,6 +13,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import org.mindrot.jbcrypt.BCrypt;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -57,7 +58,7 @@ public class LoginController {
         try{
             User user = userHibernate.getUserByLogin(usernameF.getText());
 
-            if(!user.getPassword().equals(passwordF.getText())){
+            if(!BCrypt.checkpw(passwordF.getText(), user.getPassword())){
                 alertController.errorDialog("Login error", "Username or Password is invalid.", "Verify that you entered the credentials correctly.");
                 return false;
             }

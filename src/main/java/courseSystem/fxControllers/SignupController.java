@@ -14,11 +14,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import courseSystem.hibernateControllers.UserHibernate;
 import javafx.stage.Stage;
+import org.mindrot.jbcrypt.BCrypt;
 import org.w3c.dom.Text;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.SQLException;
 
 public class SignupController {
@@ -56,8 +61,13 @@ public class SignupController {
     }
 
     public void createPerson() {
-        Person person = new Person(usernameF.getText(), passwordF.getText(), fNameF.getText(), lNameF.getText(), emailF.getText());
-        userHibernate.createUser(person);
+        try {
+            String hashedPass = hashPassword(passwordF.getText());
+            Person person = new Person(usernameF.getText(), hashedPass, fNameF.getText(), lNameF.getText(), emailF.getText());
+            userHibernate.createUser(person);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
     }
 
     public void createCompany() {
@@ -75,4 +85,11 @@ public class SignupController {
         stage.setScene(scene);
         stage.show();
     }
+
+    private String hashPassword(String unhashedPassword) throws NoSuchAlgorithmException {
+
+        String hashedPassword = BCrypt.hashpw(unhashedPassword, BCrypt.gensalt());
+        return hashedPassword;
+    }
+
 }
