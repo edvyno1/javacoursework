@@ -86,7 +86,7 @@ public class SignupController {
         stage.show();
     }
 
-    private String hashPassword(String unhashedPassword) throws NoSuchAlgorithmException {
+    public String hashPassword(String unhashedPassword) throws NoSuchAlgorithmException {
 
         String hashedPassword = BCrypt.hashpw(unhashedPassword, BCrypt.gensalt());
         return hashedPassword;

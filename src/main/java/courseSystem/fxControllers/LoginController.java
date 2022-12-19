@@ -21,9 +21,9 @@ import java.io.IOException;
 
 public class LoginController {
     @FXML
-    private PasswordField passwordF;
+    protected PasswordField passwordF;
     @FXML
-    private TextField usernameF;
+    protected TextField usernameF;
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CourseSystem");
     UserHibernate userHibernate = new UserHibernate(entityManagerFactory);
@@ -40,7 +40,7 @@ public class LoginController {
 
     public void onLoginButtonClick(ActionEvent actionEvent)throws IOException {
 
-        if(isLoginValid()) {
+        if (isLoginValid(usernameF.getText(), passwordF.getText())) {
             FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("CourseWindow.fxml"));
             Parent root = fxmlLoader.load();
             Scene scene = new Scene(root);
@@ -48,23 +48,24 @@ public class LoginController {
             stage.setScene(scene);
             stage.show();
         }
+        else {
+            alertController.errorDialog("Login error", "Username or Password is invalid.", "Verify that you entered the credentials correctly.");
+        }
+
     }
 
-    private boolean isLoginValid() throws IOException{
-        if(usernameF.getText().isEmpty() || passwordF.getText().isEmpty()){
-            alertController.errorDialog("Login error", "Username and/or Password fields mustn't be empty.", "Fill the missing fields and try again.");
+    protected boolean isLoginValid(String usernameF, String passwordF) throws IOException{
+        if(usernameF.isEmpty() || passwordF.isEmpty()){
             return false;
         }
         try{
-            User user = userHibernate.getUserByLogin(usernameF.getText());
+            User user = userHibernate.getUserByLogin(usernameF);
 
-            if(!BCrypt.checkpw(passwordF.getText(), user.getPassword())){
-                alertController.errorDialog("Login error", "Username or Password is invalid.", "Verify that you entered the credentials correctly.");
+            if(!BCrypt.checkpw(passwordF, user.getPassword())){
                 return false;
             }
         }
         catch (Exception e){
-            alertController.errorDialog("Login error", "Username or Password is invalid.", "Verify that you entered the credentials correctly.");
             return false;
         }
 
