@@ -22,6 +22,7 @@ import java.util.Properties;
 
 @Controller
 public class FileWebController {
+    public static final String SUCCESS = "Success";
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CourseSystem");
     FileHibernate fileHibernate = new FileHibernate(entityManagerFactory);
     FolderHibernate folderHibernate = new FolderHibernate(entityManagerFactory);
@@ -52,7 +53,7 @@ public class FileWebController {
                 folderHibernate.getFolderById(Integer.parseInt(properties.getProperty("parentFolder"))));
         file.setId(id);
         fileHibernate.updateFile(file);
-        return "Success";
+        return SUCCESS;
     }
 
     @RequestMapping(value = "/file/addFile", method = RequestMethod.POST)
@@ -64,7 +65,7 @@ public class FileWebController {
         File file = new File(properties.getProperty("name"),
                 folderHibernate.getFolderById(Integer.parseInt(properties.getProperty("parentFolder"))));
         fileHibernate.createFile(file);
-        return "Success";
+        return SUCCESS;
     }
 
     @RequestMapping(value = "/file/deleteFile/{id}", method = RequestMethod.DELETE)
@@ -73,6 +74,6 @@ public class FileWebController {
     public String updateFolder(@PathVariable(name = "id") int id) {
         fileHibernate.deleteFile(id);
         //Patikrinti ar tikrai istryne
-        return "Success";
+        return SUCCESS;
     }
 }

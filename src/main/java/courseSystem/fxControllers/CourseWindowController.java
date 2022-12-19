@@ -31,6 +31,7 @@ import java.util.ResourceBundle;
 
 public class CourseWindowController implements Initializable {
 
+    public static final String NEW_FOLDER = "New folder";
     @FXML
     public ListView myCourses;
     @FXML
@@ -136,23 +137,24 @@ public class CourseWindowController implements Initializable {
 
     public void addFolder(ActionEvent event){
         Folder folder;
+
         TreeItem<String> treeItem = (TreeItem<String>) courseFolderTree.getSelectionModel().getSelectedItem();
         if(treeItem == courseFolderTree.getRoot()){
             String courseId = myCourses.getSelectionModel().getSelectedItem().toString().split(":")[0];
             Course course = courseHibernate.getCourseById(Integer.parseInt(courseId));
-            folder = new Folder("New folder", course);
+            folder = new Folder(NEW_FOLDER, course);
         }
         else{
             String selectedItem = treeItem.getValue();
             System.out.println(selectedItem);
             Folder parentFolder = folderHibernate.getFolderByTitle(selectedItem);
-            folder = new Folder("New folder", parentFolder);
+            folder = new Folder(NEW_FOLDER, parentFolder);
         }
 
         folderHibernate.createFolder(folder);
         addTreeItem(folder, treeItem);
         for(TreeItem<String> string : treeItem.getChildren()){
-            if(string.getValue().equals("New folder")){
+            if(string.getValue().equals(NEW_FOLDER)){
                 treeItem.setExpanded(true);
                 courseFolderTree.edit(string);
                 break;

@@ -3,13 +3,11 @@ package courseSystem.webControllers;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
-import courseSystem.ds.Company;
 import courseSystem.ds.User;
 import courseSystem.ds.Person;
 import courseSystem.hibernateControllers.UserHibernate;
 import courseSystem.util.LocalDateSerializer;
 import courseSystem.util.UserGsonSerializer;
-import courseSystem.util.UserListGsonSerializer;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import java.lang.reflect.Type;
-import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Properties;
@@ -25,6 +22,8 @@ import java.util.Properties;
 @Controller //localhost:8080/application_context/user
 public class UserWebController {
 
+    public static final String SUCCESS = "Success";
+    public static final String LOGIN_PROPERTY = "login";
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CourseSystem");
     UserHibernate userHibController = new UserHibernate(entityManagerFactory);
 
@@ -54,7 +53,7 @@ public class UserWebController {
         Properties data = parser.fromJson(request, Properties.class);
         GsonBuilder gson = new GsonBuilder();
         User user = null;
-        user = userHibController.getUserByLogin(data.getProperty("login"));
+        user = userHibController.getUserByLogin(data.getProperty(LOGIN_PROPERTY));
         if(data.getProperty("password").equals(user.getPassword())){
             gson.registerTypeAdapter(LocalDate.class, new LocalDateSerializer());
             Gson builder = gson.create();
@@ -70,10 +69,10 @@ public class UserWebController {
     public String updatePerson(@RequestBody String request, @PathVariable(name = "id") int id) {
         Gson gson = new Gson();
         Properties properties = gson.fromJson(request, Properties.class);
-        Person updatedPerson = new Person(properties.getProperty("login"), properties.getProperty("psw"), properties.getProperty("name"), properties.getProperty("surname"), properties.getProperty("email"));
+        Person updatedPerson = new Person(properties.getProperty(LOGIN_PROPERTY), properties.getProperty("psw"), properties.getProperty("name"), properties.getProperty("surname"), properties.getProperty("email"));
         updatedPerson.setId(id);
         userHibController.editUser(updatedPerson);
-        return "Success";
+        return SUCCESS;
     }
 
     @RequestMapping(value = "/user/addPerson", method = RequestMethod.POST)
@@ -82,9 +81,9 @@ public class UserWebController {
     public String addNewPerson(@RequestBody String request) {
         Gson gson = new Gson();
         Properties properties = gson.fromJson(request, Properties.class);
-        Person person = new Person(properties.getProperty("login"), properties.getProperty("psw"), properties.getProperty("name"), properties.getProperty("surname"), properties.getProperty("email"));
+        Person person = new Person(properties.getProperty(LOGIN_PROPERTY), properties.getProperty("psw"), properties.getProperty("name"), properties.getProperty("surname"), properties.getProperty("email"));
         userHibController.createUser(person);
-        return "Success";
+        return SUCCESS;
     }
 
     @RequestMapping(value = "/user/deleteUser/{id}", method = RequestMethod.DELETE)
@@ -92,7 +91,7 @@ public class UserWebController {
     @ResponseBody
     public String updatePerson(@PathVariable(name = "id") int id) {
         userHibController.deleteUser(id);
-        return "Success";
+        return SUCCESS;
     }
 
 }

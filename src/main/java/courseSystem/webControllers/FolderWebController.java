@@ -24,6 +24,7 @@ import java.util.Properties;
 
 @Controller
 public class FolderWebController {
+    public static final String SUCCESS = "Success";
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CourseSystem");
     FolderHibernate folderHibernate = new FolderHibernate(entityManagerFactory);
     CourseHibernate courseHibernate = new CourseHibernate(entityManagerFactory);
@@ -75,7 +76,7 @@ public class FolderWebController {
                 folderHibernate.getFolderById(Integer.parseInt(properties.getProperty("parentFolder"))));
         folder.setId(id);
         folderHibernate.updateFolder(folder);
-        return "Success";
+        return SUCCESS;
     }
 
     @RequestMapping(value = "/folder/addFolder", method = RequestMethod.POST)
@@ -88,7 +89,7 @@ public class FolderWebController {
                 courseHibernate.getCourseById(Integer.parseInt(properties.getProperty("parentCourse"))),
                 folderHibernate.getFolderById(Integer.parseInt(properties.getProperty("parentFolder"))));
         folderHibernate.createFolder(folder);
-        return "Success";
+        return SUCCESS;
     }
 
     @RequestMapping(value = "/folder/deleteFolder/{id}", method = RequestMethod.DELETE)
@@ -97,7 +98,7 @@ public class FolderWebController {
     public String updateFolder(@PathVariable(name = "id") int id) {
         folderHibernate.deleteFolder(id);
         //Patikrinti ar tikrai istryne
-        return "Success";
+        return SUCCESS;
     }
 }
 

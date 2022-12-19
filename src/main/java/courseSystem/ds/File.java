@@ -1,9 +1,9 @@
 package courseSystem.ds;
 
 import javax.persistence.*;
-
+import java.io.Serializable;
 @Entity
-public class File {
+public class File implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;

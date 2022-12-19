@@ -20,6 +20,7 @@ import java.util.Properties;
 
 @Controller
 public class CourseWebController {
+    public static final String SUCCESS = "Success";
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CourseSystem");
     CourseHibernate courseHibernate = new CourseHibernate(entityManagerFactory);
 
@@ -49,7 +50,7 @@ public class CourseWebController {
         Course course = new Course(properties.getProperty("title"), properties.getProperty("description"), LocalDate.parse(properties.getProperty("startDate")),  LocalDate.parse(properties.getProperty("endDate")));
         course.setId(id);
         courseHibernate.editCourse(course);
-        return "Success";
+        return SUCCESS;
     }
 
     @RequestMapping(value = "/course/addCourse", method = RequestMethod.POST)
@@ -60,7 +61,7 @@ public class CourseWebController {
         Properties properties = gson.fromJson(request, Properties.class);
         Course course = new Course(properties.getProperty("title"), properties.getProperty("description"), LocalDate.parse(properties.getProperty("startDate")),  LocalDate.parse(properties.getProperty("endDate")));
         courseHibernate.createCourse(course);
-        return "Success";
+        return SUCCESS;
     }
 
     @RequestMapping(value = "/course/deleteCourse/{id}", method = RequestMethod.DELETE)
@@ -69,6 +70,6 @@ public class CourseWebController {
     public String deleteCourse(@PathVariable(name = "id") int id) {
         courseHibernate.deleteCourse(id);
         //Patikrinti ar tikrai istryne
-        return "Success";
+        return SUCCESS;
     }
 }
