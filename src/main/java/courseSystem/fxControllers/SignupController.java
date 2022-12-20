@@ -47,12 +47,16 @@ public class SignupController {
     public TextField cNameF;
     @FXML
     public TextField pOfContactF;
+    AlertController alertController = new AlertController();
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CourseSystem");
     UserHibernate userHibernate = new UserHibernate(entityManagerFactory);
     public void onActionSignupButton()throws IOException, NoSuchAlgorithmException {
         String password = passwordF.getText();
-        isPasswordValid(password);
+        if(!isPasswordValid(password)){
+            alertController.errorDialog("Register error", "Password must be at least 8 characters", "Use a longer password");
+            return;
+        };
         String hashedPass = hashPassword(password);
 
         if (PersonBtn.isSelected()) {

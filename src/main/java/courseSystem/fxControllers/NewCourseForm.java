@@ -44,6 +44,10 @@ public class NewCourseForm {
 
         Course course = new Course(courseTitle.getText(),courseDesc.getText(),courseStart.getValue(),courseEnd.getValue());
         courseHibernate.createCourse(course);
+        courseWindowFxmlLoader();
+    }
+
+    private void courseWindowFxmlLoader() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("CourseWindow.fxml"));
         Parent root = fxmlLoader.load();
 
@@ -55,6 +59,7 @@ public class NewCourseForm {
         stage.setScene(scene);
         stage.show();
     }
+
     public void editCourse(ActionEvent actionEvent) throws IOException {
         Course course = courseHibernate.getCourseByTitle(titleOfEdit);
         Course newCourse = new Course();
@@ -64,15 +69,6 @@ public class NewCourseForm {
         newCourse.setStartDate(courseStart.getValue());
         newCourse.setEndDate(courseEnd.getValue());
         courseHibernate.editCourse(newCourse);
-        FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("CourseWindow.fxml"));
-        Parent root = fxmlLoader.load();
-
-        CourseWindowController courseWindowController = fxmlLoader.getController();
-        courseWindowController.setUser(login);
-
-        Scene scene = new Scene(root);
-        Stage stage = (Stage) courseTitle.getScene().getWindow();
-        stage.setScene(scene);
-        stage.show();
+        courseWindowFxmlLoader();
     }
 }
