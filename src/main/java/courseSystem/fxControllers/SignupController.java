@@ -50,35 +50,32 @@ public class SignupController {
 
     EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("CourseSystem");
     UserHibernate userHibernate = new UserHibernate(entityManagerFactory);
+    public void onActionSignupButton()throws IOException, NoSuchAlgorithmException {
+        String password = passwordF.getText();
+        isPasswordValid(password);
+        String hashedPass = hashPassword(password);
 
-    public void onActionSignupButton()throws IOException, SQLException {
         if (PersonBtn.isSelected()) {
-            createPerson();
+            Person person = new Person(usernameF.getText(), hashedPass, fNameF.getText(), lNameF.getText(), emailF.getText());
+            createPerson(person);
         } else {
-            createCompany();
+            Company company = new Company(usernameF.getText(), hashedPass, cNameF.getText(), pOfContactF.getText());
+            createCompany(company);
         }
         showScene();
     }
 
-    public void createPerson() {
-        try {
-            String hashedPass = hashPassword(passwordF.getText());
-            Person person = new Person(usernameF.getText(), hashedPass, fNameF.getText(), lNameF.getText(), emailF.getText());
-            userHibernate.createUser(person);
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
+    public void createPerson(Person person) {
+        userHibernate.createUser(person);
     }
 
-    public void createCompany() {
-        Company company = new Company(usernameF.getText(), passwordF.getText(), cNameF.getText(), pOfContactF.getText());
+    public void createCompany(Company company) {
         userHibernate.createUser(company);
     }
 
     public void showScene() throws IOException{
         FXMLLoader fxmlLoader = new FXMLLoader(Start.class.getResource("CourseWindow.fxml"));
         Parent root = fxmlLoader.load();
-
         CourseWindowController courseWindowController = fxmlLoader.getController();
         Scene scene = new Scene(root);
         Stage stage = (Stage) usernameF.getScene().getWindow();
@@ -87,9 +84,14 @@ public class SignupController {
     }
 
     public String hashPassword(String unhashedPassword) throws NoSuchAlgorithmException {
-
         String hashedPassword = BCrypt.hashpw(unhashedPassword, BCrypt.gensalt());
         return hashedPassword;
     }
 
+    public boolean isPasswordValid(String password){
+        if(password.length() <= 7){
+            return false;
+        }
+        return true;
+    }
 }
