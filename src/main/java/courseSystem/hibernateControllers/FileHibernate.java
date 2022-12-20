@@ -11,6 +11,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileHibernate {
@@ -91,7 +92,7 @@ public class FileHibernate {
 
     public File getFileByName(String fileName) {
         EntityManager em;
-        List<File> result = null;
+        List<File> result = new ArrayList<>();
         try {
             em = getEntityManager();
             em.getTransaction().begin();

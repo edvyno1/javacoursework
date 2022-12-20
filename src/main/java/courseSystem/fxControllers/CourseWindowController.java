@@ -177,7 +177,7 @@ public class CourseWindowController implements Initializable {
 
     @FXML
     public void addFile(ActionEvent actionEvent) throws IOException {
-        File file = null;
+        File file = new File();
         FileChooser chooser = new FileChooser();
         chooser.setTitle("Open File");
         java.io.File fileChosen = chooser.showOpenDialog(myCourses.getScene().getWindow());

@@ -8,6 +8,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserHibernate {
@@ -80,7 +81,7 @@ public class UserHibernate {
 
     public User getUserByLogin(String login) {
         EntityManager em;
-        List<User> result = null;
+        List<User> result = new ArrayList<>();
         try {
             em = getEntityManager();
             em.getTransaction().begin();

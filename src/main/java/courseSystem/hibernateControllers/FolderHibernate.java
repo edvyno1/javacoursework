@@ -96,7 +96,7 @@ public class FolderHibernate {
     public Folder getFolderByTitle(String folderTitle) {
         System.out.println(folderTitle);
         EntityManager em;
-        List<Folder> result = null;
+        List<Folder> result = new ArrayList<>();
         try {
             em = getEntityManager();
             em.getTransaction().begin();
@@ -116,7 +116,7 @@ public class FolderHibernate {
 
     public List<Folder> getAllFolders() {
         EntityManager em = getEntityManager();
-        List<Folder> result = null;
+        List<Folder> result = new ArrayList<>();
         try {
             CriteriaQuery query = em.getCriteriaBuilder().createQuery();
             query.select(query.from(Folder.class));
